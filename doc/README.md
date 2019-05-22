@@ -1,23 +1,23 @@
 
 # Use case
 
-![use case diagram](img\Use-case.png)
+![use case diagram](img/Use-case.png)
 
 
 ## Technical description
 
 ### Blocks diagram
 
-![Blocks-diagram](img\Blocks-diagram.png)
+![Blocks-diagram](img/Blocks-diagram.png)
 
 ### API
 **Postman Requests**
 
-![postman](img\postman.png)
+![postman](img/postman.png)
 
 ### Data model
 
-![data-model](img\data-model.png)
+![data-model](img/data-model.png)
 
 *******
 
