@@ -1,0 +1,182 @@
+{
+    "_id": {
+        "$oid": "5bf51a269a7daa242c5fe78c"
+    },
+    "type": "sandwich",
+    "name": "Beirut",
+    "price": {
+        "$numberDouble": "3.5"
+    },
+    "image": "https://images.unsplash.com/photo-1539252554453-80ab65ce3586?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=577e4d212983d874a49f499384c54328&auto=format&fit=crop&w=634&q=80",
+    "quantity": "1",
+    "description": "Cucumber, Hummus, Olive cream & Mezclum"
+}
+{
+    "_id": {
+        "$oid": "5bf51d2704ff2a242c81a2a1"
+    },
+    "type": "sandwich",
+    "name": "Damasco",
+    "price": {
+        "$numberDouble": "3.5"
+    },
+    "image": "https://images.unsplash.com/photo-1485451456034-3f9391c6f769?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=2400debad70107daf28601d844625bc0&auto=format&fit=crop&w=1950&q=80",
+    "quantity": "1",
+    "description": "Carrot, Tender onion, Egg, BabaGanoush & Arugula"
+},
+{
+    "_id": {
+        "$oid": "5bf51d5004ff2a242c81a2a2"
+    },
+    "type": "sandwich",
+    "name": "Shanghai",
+    "price": {
+        "$numberDouble": "3.5"
+    },
+    "image": "https://images.unsplash.com/photo-1509722747041-616f39b57569?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=22d738090b14113ac4c10a757173586d&auto=format&fit=crop&w=1950&q=80",
+    "quantity": "1",
+    "description": "Turkey, Tender Onion, Cheddar, Mezclum & Hoisin"
+}
+{
+    "_id": {
+        "$oid": "5bf51d7104ff2a242c81a2a3"
+    },
+    "type": "sandwich",
+    "name": "Delhi",
+    "price": {
+        "$numberDouble": "3.5"
+    },
+    "image": "https://images.unsplash.com/photo-1481070414801-51fd732d7184?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=82203e4d57fc0d3bdd8ffc0f66d09763&auto=format&fit=crop&w=1225&q=80",
+    "quantity": "1",
+    "description": "Turkey, Green Tomato, Spinach & Curry"
+}
+{
+    "_id": {
+        "$oid": "5bf51d9104ff2a242c81a2a4"
+    },
+    "type": "sandwich",
+    "name": "Oslo",
+    "price": {
+        "$numberDouble": "4.9"
+    },
+    "image": "https://images.unsplash.com/photo-1492016775777-ed98c058f826?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=cf28351d6c570fc27646947eb24d5d22&auto=format&fit=crop&w=1952&q=80",
+    "quantity": "1",
+    "description": "Smoked Salmon, Cucumber, Canons & Citrus"
+}
+{
+    "_id": {
+        "$oid": "5bf51df004ff2a242c81a2a5"
+    },
+    "type": "juice",
+    "name": "Fresh",
+    "price": {
+        "$numberDouble": "2.9"
+    },
+    "image": "https://images.unsplash.com/photo-1534318002854-72e10bf140ed?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=3a987deddb37a8045edc1db7e5a30baa&auto=format&fit=crop&w=634&q=80",
+    "quantity": "1",
+    "description": "Carrot, Pineapple, Grape, Lemon & Curry"
+}
+{
+    "_id": {
+        "$oid": "5bf51e6404ff2a242c81a2a6"
+    },
+    "type": "juice",
+    "name": "Sweet",
+    "price": {
+        "$numberDouble": "2.9"
+    },
+    "image": "https://images.unsplash.com/photo-1528498033373-3c6c08e93d79?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=fec414d0c81f6f3a63d2297e1ecb988b&auto=format&fit=crop&w=632&q=80",
+    "quantity": "1",
+    "description": "Beetroot, Golden Apple, Carrot & Maca"
+}
+{
+    "_id": {
+        "$oid": "5bf51e8204ff2a242c81a2a7"
+    },
+    "type": "juice",
+    "name": "Vitamin",
+    "price": {
+        "$numberDouble": "2.9"
+    },
+    "image": "https://images.unsplash.com/photo-1539685524231-a8788edad4e4?ixlib=rb-0.3.5&s=59bbc14fc3170c672ac95cc4c0e4cba5&auto=format&fit=crop&w=729&q=80",
+    "quantity": "1",
+    "description": "Pear Conference, Orange, Celery, Apple, Ginger & Chia"
+}
+{
+    "_id": {
+        "$oid": "5bf51ea604ff2a242c81a2a8"
+    },
+    "type": "juice",
+    "name": "Basics",
+    "price": {
+        "$numberDouble": "2.5"
+    },
+    "image": "https://images.unsplash.com/photo-1528703044342-7600ec48072e?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=d00fadd215c887f46f3703be4101c84c&auto=format&fit=crop&w=2134&q=80",
+    "quantity": "1",
+    "description": "Orange 100%"
+}
+{
+    "_id": {
+        "$oid": "5bf51f1e04ff2a242c81a2a9"
+    },
+    "type": "yogurt",
+    "name": "Blueberry",
+    "price": {
+        "$numberDouble": "2.9"
+    },
+    "image": "https://images.unsplash.com/photo-1459162141474-3bd9d0fb079d?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=17f41ffd3f6d725c8423245b392f4c73&auto=format&fit=crop&w=634&q=80",
+    "quantity": "1",
+    "description": "Muesli, Strawberry, Blueberries"
+}
+{
+    "_id": {
+        "$oid": "5bf51f7204ff2a242c81a2aa"
+    },
+    "type": "yogurt",
+    "name": "Atlantic",
+    "price": {
+        "$numberDouble": "2.9"
+    },
+    "image": "https://images.unsplash.com/photo-1535603709739-7e8fd50e015d?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=2ff87d621bef46dff562d5d9cf3b9e69&auto=format&fit=crop&w=2000&q=80",
+    "quantity": "1",
+    "description": "Granola, Banana, Strawberry & Poppy"
+}
+{
+    "_id": {
+        "$oid": "5bf51f8c04ff2a242c81a2ab"
+    },
+    "type": "yogurt",
+    "name": "Tropic",
+    "price": {
+        "$numberDouble": "2.9"
+    },
+    "image": "https://images.unsplash.com/photo-1530259152377-3a014e1092e0?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=fbf2ea784af73d25e9f6aa9dccf23d7c&auto=format&fit=crop&w=1349&q=80",
+    "quantity": "1",
+    "description": "Pineapple, Granola, Blueberries"
+}
+{
+    "_id": {
+        "$oid": "5bf520ee04ff2a242c81a2ac"
+    },
+    "type": "salad",
+    "name": "Winter",
+    "price": {
+        "$numberDouble": "2.9"
+    },
+    "image": "https://images.unsplash.com/photo-1519996529931-28324d5a630e?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=76a14da4c8f74e83ceb3629b0427d6d2&auto=format&fit=crop&w=634&q=80",
+    "quantity": "1",
+    "description": "Seasonal fruits"
+}
+{
+    "_id": {
+        "$oid": "5bf5210704ff2a242c81a2ad"
+    },
+    "type": "salad",
+    "name": "Summer",
+    "price": {
+        "$numberDouble": "2.9"
+    },
+    "image": "https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?ixlib=rb-0.3.5&s=b197f1fd570693c07d0d3f79c755b4e0&auto=format&fit=crop&w=1350&q=80",
+    "quantity": "1",
+    "description": "Seasonal fruits"
+}
