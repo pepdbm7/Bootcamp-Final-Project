@@ -145,20 +145,22 @@ class Cart extends Component {
                     <h1 className={`cart-type cart__type-title-${type}`}>
                       {titles[index]}
                     </h1>
-                    {products
-                      .filter(product => product.type === type)
-                      .map(product => (
-                        <Product
-                          id={product.id}
-                          name={product.name}
-                          image={product.image}
-                          price={product.price}
-                          description={product.description}
-                          quantity={product.quantity}
-                          onDeleteMore={this.handleDeleteMoreFromCart}
-                          addMore={this.addMore}
-                        />
-                      ))}
+                    <div className="products__container">
+                      {products
+                        .filter(product => product.type === type)
+                        .map(product => (
+                          <Product
+                            id={product.id}
+                            name={product.name}
+                            image={product.image}
+                            price={product.price}
+                            description={product.description}
+                            quantity={product.quantity}
+                            onDeleteMore={this.handleDeleteMoreFromCart}
+                            addMore={this.addMore}
+                          />
+                        ))}
+                    </div>
                   </div>
                 </div>
               ))

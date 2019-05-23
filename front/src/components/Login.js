@@ -10,16 +10,10 @@ class Login extends Component {
     password: ""
   };
 
-  handleUsernameChange = event => {
-    const username = event.target.value;
-
-    this.setState({ username });
-  };
-
-  handlePasswordChange = event => {
-    const password = event.target.value;
-
-    this.setState({ password });
+  handleChange = e => {
+    const key = e.target.name;
+    const value = e.target.value;
+    this.setState({ ...this.state, [key]: value });
   };
 
   handleSubmit = event => {
@@ -30,45 +24,55 @@ class Login extends Component {
     try {
       logic
         .login(username, password)
-        .then(() => {
-          this.props.history.push("/home");
-        })
+        .then(() =>
+          this.setState({ successMessage: "Welcome!!" }, () => {
+            setTimeout(() => {
+              this.setState({ successMessage: null });
+              this.props.history.push("/home");
+            }, 2000);
+          })
+        )
         .catch(err => {
           this.setState({ errorMessage: err.message }, () => {
             setTimeout(() => {
               this.setState({ errorMessage: null });
-            }, 3000);
+            }, 2500);
           });
         });
     } catch (err) {
       this.setState({ errorMessage: err.message }, () => {
         setTimeout(() => {
           this.setState({ errorMessage: null });
-        }, 3000);
+        }, 2500);
       });
     }
   };
 
   render() {
-    let error = () => {
-      if (this.state.errorMessage) {
+    let message = () => {
+      if (this.state.successMessage) {
+        return <p className="correct">{this.state.successMessage}</p>;
+      } else if (this.state.errorMessage) {
         return <p className="error">{this.state.errorMessage}</p>;
       }
       return null;
     };
 
+    const { handleChange, handleSubmit } = this;
+
     return (
       <div className="login__container">
         <h1 className="login__title">Sign In</h1>
-        <form className="form-group login__form" onSubmit={this.handleSubmit}>
+        <form className="form-group login__form" onSubmit={handleSubmit}>
           <div className="form-group">
             <input
               className="form-control"
               required
               type="text"
+              name={"username"}
               autoFocus
               placeholder="Username"
-              onChange={this.handleUsernameChange}
+              onChange={handleChange}
             />
           </div>
 
@@ -77,8 +81,9 @@ class Login extends Component {
               className="form-control"
               required
               type="password"
+              name={"password"}
               placeholder="Password"
-              onChange={this.handlePasswordChange}
+              onChange={handleChange}
             />
           </div>
 
@@ -94,7 +99,7 @@ class Login extends Component {
               Go Back
             </button>
           </div>
-          {error()}
+          {message()}
         </form>
       </div>
     );

@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 
+//logic:
 import logic from "../logic";
 
 class Register extends Component {
   state = {
-    registerDoneMessage: null,
-    registerErrorMessage: null,
+    successMessage: null,
+    errorMessage: null,
     type: "",
     name: "",
     surname: "",
@@ -15,40 +16,10 @@ class Register extends Component {
     password: ""
   };
 
-  handleTypeChange = event => {
-    const type = event.target.value;
-
-    this.setState({ type });
-  };
-
-  handleNameChange = event => {
-    const name = event.target.value;
-
-    this.setState({ name });
-  };
-
-  handleSurnameChange = event => {
-    const surname = event.target.value;
-
-    this.setState({ surname });
-  };
-
-  handleEmailChange = event => {
-    const email = event.target.value;
-
-    this.setState({ email });
-  };
-
-  handleUsernameChange = event => {
-    const username = event.target.value;
-
-    this.setState({ username });
-  };
-
-  handlePasswordChange = event => {
-    const password = event.target.value;
-
-    this.setState({ password });
+  handleChange = e => {
+    const key = e.target.name;
+    const value = e.target.value;
+    this.setState({ ...this.state, [key]: value });
   };
 
   handleSubmit = event => {
@@ -59,10 +30,10 @@ class Register extends Component {
     try {
       logic
         .registerUser(type, name, surname, email, username, password)
-        .then(() => {
+        .then(() =>
           this.setState(
             {
-              registerDoneMessage: `Great! ' ${username} ' successfully registered`,
+              successMessage: `Great, ${username}! Thanks for registering!`,
               name: "",
               surname: "",
               email: "",
@@ -71,37 +42,53 @@ class Register extends Component {
             },
             () => {
               setTimeout(() => {
-                this.setState({ registerDoneMessage: null });
+                this.setState({ successMessage: null });
                 this.props.history.push("/login");
               }, 2000);
             }
-          );
-        })
+          )
+        )
         .catch(err => {
-          this.setState({ registerErrorMessage: err.message }, () => {
-            setTimeout(() => {
-              this.setState({ registerErrorMessage: null });
-            }, 2000);
-          });
+          if (
+            err.message ===
+            "The provided authorization grant is invalid, expired, or revoked"
+          ) {
+            this.setState(
+              { successMessage: `Great, ${username}! Thanks for registering!` },
+              () =>
+                setTimeout(() => {
+                  this.setState({ successMessage: null });
+                  this.props.history.push("/login");
+                }, 2000)
+            );
+          }
+
+          this.setState({ errorMessage: err.message }, () =>
+            setTimeout(() => this.setState({ errorMessage: null }), 2000)
+          );
         });
     } catch (err) {
-      this.setState({ registerErrorMessage: err.message }, () => {
+      this.setState({ errorMessage: err.message }, () =>
         setTimeout(() => {
-          this.setState({ registerErrorMessage: null });
-        }, 2000);
-      });
+          this.setState({ errorMessage: null });
+        }, 2000)
+      );
     }
   };
 
   render() {
-    let error = () => {
-      if (this.state.registerDoneMessage) {
-        return <p className="correct">{this.state.registerDoneMessage}</p>;
-      } else if (this.state.registerErrorMessage) {
-        return <p className="error">{this.state.registerErrorMessage}</p>;
+    let message = () => {
+      if (this.state.successMessage) {
+        return <p className="correct">{this.state.successMessage}</p>;
+      } else if (this.state.errorMessage) {
+        return <p className="error">{this.state.errorMessage}</p>;
       }
       return null;
     };
+
+    const { handleChange } = this;
+    const { name, surname, email, username, password } = this.state;
+    const { onGoBack } = this.props;
 
     return (
       <div className="register__container">
@@ -112,10 +99,11 @@ class Register extends Component {
         >
           <div class="form-group">
             <select
-              className="form-control register__type"
-              required
               autoFocus
-              onChange={this.handleTypeChange}
+              required
+              className="form-control register__type"
+              name={"type"}
+              onChange={handleChange}
             >
               <option className="form-control register__type" disabled selected>
                 {" "}
@@ -137,9 +125,10 @@ class Register extends Component {
               className="form-control"
               required
               type="text"
-              value={this.state.name}
+              name={"name"}
+              value={name}
               placeholder="Name"
-              onChange={this.handleNameChange}
+              onChange={handleChange}
             />
           </div>
           <div className="form-group">
@@ -147,9 +136,10 @@ class Register extends Component {
               className="form-control"
               required
               type="text"
-              value={this.state.surname}
+              name={"surname"}
+              value={surname}
               placeholder="Surname"
-              onChange={this.handleSurnameChange}
+              onChange={handleChange}
             />
           </div>
           <div className="form-group">
@@ -157,9 +147,10 @@ class Register extends Component {
               className="form-control"
               required
               type="text"
-              value={this.state.email}
+              name={"email"}
+              value={email}
               placeholder="Email"
-              onChange={this.handleEmailChange}
+              onChange={handleChange}
             />
           </div>
           <div className="form-group">
@@ -167,9 +158,10 @@ class Register extends Component {
               className="form-control"
               required
               type="text"
-              value={this.state.username}
+              name={"username"}
+              value={username}
               placeholder="Username"
-              onChange={this.handleUsernameChange}
+              onChange={handleChange}
             />
           </div>
           <div className="form-group">
@@ -177,24 +169,25 @@ class Register extends Component {
               className="form-control"
               required
               type="password"
-              value={this.state.password}
+              name={"password"}
+              value={password}
               placeholder="Password"
-              onChange={this.handlePasswordChange}
+              onChange={handleChange}
             />
           </div>
           <div className="form-group">
             <button className="btn btn-primary btn-lg" type="submit">
-              Register
+              Submit
             </button>{" "}
             <button
               className="btn-register btn btn-link"
               href="#"
-              onClick={this.props.onGoBack}
+              onClick={onGoBack}
             >
               Go Back
             </button>
           </div>
-          {error()}
+          {message()}
         </form>
       </div>
     );

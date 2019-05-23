@@ -29,8 +29,8 @@ body {
 }
 
 .landing-title:hover {
+  cursor: default;
   color: #1e1a1b;
-  cursor: pointer;
 }
 
 .landing-title::after {
@@ -40,11 +40,13 @@ body {
 }
 
 .landing-title:hover::before {
+  cursor: default;
   -webkit-transform: translate3d(300%, 0, 0) scale3d(0, 1, 1);
   transform: translate3d(300%, 0, 0) scale3d(0, 1, 1);
 }
 
 .landing-title:hover::after {
+  cursor: default;
   -webkit-transform: translate3d(0, 0, 0) scale3d(1, 1, 1);
   transform: translate3d(0, 0, 0) scale3d(1, 1, 1);
 }
@@ -62,10 +64,12 @@ body {
 }
 
 .landing-title:hover span {
+  cursor: default;
   color: #fff;
 }
 
 .landing-title:hover .landing-e {
+  cursor: default;
   -webkit-transform: perspective(1000px) rotate3d(0, 1, 0, 180deg);
   transform: perspective(1000px) rotate3d(0, 1, 0, 180deg);
 }
@@ -78,6 +82,69 @@ body {
   align-self: center;
   font-size: 8vw;
   font-weight: 300;
+}
+
+.landing-subtitle:hover {
+  cursor: default;
+  -webkit-animation: landing-subtitle 0.8s
+    cubic-bezier(0.455, 0.03, 0.515, 0.955) both;
+  animation: landing-subtitle 0.8s cubic-bezier(0.455, 0.03, 0.515, 0.955) both;
+}
+@-webkit-keyframes landing-subtitle {
+  0%,
+  100% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+  }
+  10%,
+  30%,
+  50%,
+  70% {
+    -webkit-transform: translateX(-10px);
+    transform: translateX(-10px);
+  }
+  20%,
+  40%,
+  60% {
+    -webkit-transform: translateX(10px);
+    transform: translateX(10px);
+  }
+  80% {
+    -webkit-transform: translateX(8px);
+    transform: translateX(8px);
+  }
+  90% {
+    -webkit-transform: translateX(-8px);
+    transform: translateX(-8px);
+  }
+}
+@keyframes landing-subtitle {
+  0%,
+  100% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+  }
+  10%,
+  30%,
+  50%,
+  70% {
+    -webkit-transform: translateX(-10px);
+    transform: translateX(-10px);
+  }
+  20%,
+  40%,
+  60% {
+    -webkit-transform: translateX(10px);
+    transform: translateX(10px);
+  }
+  80% {
+    -webkit-transform: translateX(8px);
+    transform: translateX(8px);
+  }
+  90% {
+    -webkit-transform: translateX(-8px);
+    transform: translateX(-8px);
+  }
 }
 
 .landing-buttons {
@@ -103,12 +170,11 @@ body {
 }
 
 .register__title {
-  margin: 50px;
-  font-size: 9vw;
-  font-weight: 900px;
-  color: #d03315;
-  text-shadow: 3px 2px 5px #0000005e;
-  top: 100px;
+  font-family: "Dancing Script", cursive;
+  margin: 40px;
+  font-size: 45px;
+  font-weight: 700;
+  color: hsl(248, 93%, 29%);
 }
 
 .form-group {
@@ -124,13 +190,10 @@ label {
 }
 
 .register__form {
-  min-width: 340px;
-  width: 500px;
-  background: hsla(0, 0%, 96%, 0.719);
-  padding: 20px;
-  padding-top: 30px;
+  background: hsla(0, 0%, 96%, 1);
+  padding: 35px 25px 10px;
   border-radius: 5px;
-  box-shadow: 0px 0px 10px #0000005e;
+  box-shadow: 1px 4px 10px #0000005e;
 }
 
 /* LOGIN PAGE */
@@ -150,33 +213,29 @@ label {
 }
 
 .login__title {
-  margin: 50px;
-  font-size: 9vw;
-  font-weight: 900px;
-  color: #1c06a8;
-  text-shadow: 3px 2px 5px #0000005e;
-  top: 100px;
+  font-family: "Dancing Script", cursive;
+  margin: 40px;
+  font-size: 45px;
+  font-weight: 700;
+  color: hsl(248, 93%, 29%);
 }
 
 .login__form {
-  min-width: 340px;
-  width: 500px;
-  background: hsla(0, 0%, 96%, 0.719);
-  padding: 20px;
-  padding-top: 30px;
+  background: hsla(0, 0%, 96%, 1);
+  padding: 35px 25px 10px;
   border-radius: 5px;
-  box-shadow: 0px 0px 10px #0000005e;
+  box-shadow: 1px 4px 10px #0000005e;
 }
 
 .error {
   align-self: center;
-  color: rgb(233, 69, 102);
+  color: #b60707;
   font-weight: 700;
 }
 
 .correct {
   align-self: center;
-  color: teal;
+  color: #1e6262;
   font-weight: 700;
 }
 
@@ -261,8 +320,9 @@ label {
   flex-wrap: wrap;
 }
 
+.home__container,
 .cart {
-  height: 100vh;
+  min-height: 100vh;
 }
 
 /* PROFILE PAGE */
@@ -611,12 +671,17 @@ a {
   background-image: url("./img/bgpattern.PNG");
 }
 
+.cart__products-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
 .cart__type-container {
   display: flex;
   flex-direction: column;
 }
 
-.cart__products-container {
+.products__container {
   display: flex;
   flex-wrap: wrap;
 }
