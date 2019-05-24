@@ -1,4 +1,4 @@
-# planbe, *Fresh bites*
+# planbe, _Fresh bites_
 
 **planbe** is a responsive-designed app for an actual company of a friend of mine which prepares sells and delivers breakfasts to the clients.
 
@@ -11,7 +11,6 @@ This project has been developed during 3 weeks for the presentation of the final
 ## **Link of Demo:**
 
 To use this App **[click here](http://planbe-freshbites.surge.sh/)**
-
 
 # Used Technologies
 
@@ -26,10 +25,11 @@ To use this App **[click here](http://planbe-freshbites.surge.sh/)**
 - ES6, React, Mdbreact, Mocha
 
 **Others**:
+
 - git & github, surge, heroku, creately, draw.io
 
-
 # Screenshoots
+
 **Landing page:**
 
 ![landing page](./doc/img/landing-screenshot.png)
@@ -44,47 +44,48 @@ To use this App **[click here](http://planbe-freshbites.surge.sh/)**
 
 **Dropping details page:**
 
-![dropping details page](./doc/img/dropping-details-screenshot.PNG)  
+![dropping details page](./doc/img/dropping-details-screenshot.PNG)
 
 # Instructions
 
-## Running the application
+## Running the application from your device
 
-__Server__
+Clone or download this repo.
+
+**Server**
 
 ```
 $ cd back
 $ npm i
-$ npm run build
 $ npm start
 ```
 
-__Frontend__
+**Frontend**
 
 ```
-$ cd front 
+$ cd front
 $ npm i
-$ npm run build
 $ npm start
 ```
 
 ## Running the tests
 
-__Server__
+**Server**
 
 ```
 $ cd back
 $ mocha logic/index.spec.js
 ```
 
-__Frontend__
+**Frontend**
 
 ```
-$ cd front 
+$ cd front
 $ mocha src/logic.spec.js
 ```
 
 ## More technical documentation
+
 View this second part of the **[documentation](./doc/README.md)**
 
 # Authors

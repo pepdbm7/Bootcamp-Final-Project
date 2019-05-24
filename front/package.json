@@ -31,6 +31,7 @@
   "devDependencies": {
     "chai": "^4.2.0",
     "isomorphic-fetch": "^2.2.1",
+    "nyc": "^14.1.1",
     "planbe-data": "file:../planbe-data",
     "sessionstorage": "^0.1.0"
   }

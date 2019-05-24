@@ -113,26 +113,22 @@ const logic = {
     confirmPassword,
     password
   ) {
-    if (typeof type !== "string") throw TypeError(`${type} is not a string`);
-    if (typeof name !== "string") throw TypeError(`${name} is not a string`);
-    if (typeof surname !== "string")
-      throw TypeError(`${surname} is not a string`);
-    if (typeof email !== "string") throw TypeError(`${email} is not a string`);
+    if (typeof type !== "string") throw TypeError("type is not a string");
+    if (typeof name !== "string") throw TypeError("name is not a string");
+    if (typeof surname !== "string") throw TypeError("surname is not a string");
+    if (typeof email !== "string") throw TypeError("email is not a string");
     if (typeof username !== "string")
-      throw TypeError(`${username} is not a string`);
+      throw TypeError("username is not a string");
     if (typeof newPassword !== "string")
-      throw TypeError(`${newPassword} is not a string`);
-    if (typeof confirmPassword !== "string")
-      throw TypeError(`${confirmPassword} is not a string`);
+      throw TypeError("newPassword is not a string");
     if (typeof password !== "string")
-      throw TypeError(`${password} is not a string`);
+      throw TypeError("password is not a string");
 
     if (!type.trim()) throw Error("type is empty or blank");
     if (!name.trim()) throw Error("name is empty or blank");
     if (!surname.trim()) throw Error("surname is empty or blank");
     if (!email.trim()) throw Error("email is empty or blank");
     if (!username.trim()) throw Error("username is empty or blank");
-    if (!newPassword.trim()) throw Error("newPassword is empty or blank");
     if (!newPassword.trim()) throw Error("newPassword is empty or blank");
     if (!password.trim()) throw Error("password is empty or blank");
 
@@ -166,11 +162,8 @@ const logic = {
       });
   },
 
-  //send CONTACT info:
-
+  //send CONTACT info via SendGrid:
   sendContactForm(subject, textarea) {
-    //TODO: No funciona!!
-
     if (typeof subject !== "string")
       throw TypeError(`${subject} is not a string`);
     if (typeof textarea !== "string")

@@ -766,7 +766,7 @@ a {
 .payActive {
   align-items: center;
   margin: 0;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 .orderDetails__title,

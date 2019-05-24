@@ -49,6 +49,7 @@ class Register extends Component {
           )
         )
         .catch(err => {
+          //if SendGrid error:
           if (
             err.message ===
             "The provided authorization grant is invalid, expired, or revoked"

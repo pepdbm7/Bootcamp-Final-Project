@@ -27,7 +27,8 @@ class SetOrder extends Component {
     showModal: false
   };
 
-  onGoBack = () => {
+  onGoBack = e => {
+    e.preventDefault();
     logic.deleteUnfinishedOrders().then(() => this.props.history.push("/cart"));
   };
 
@@ -130,7 +131,8 @@ class SetOrder extends Component {
       });
     } else {
       try {
-        const { place, day, month, year, time, comments } = this.state; //in this project version we don't use CC details!
+        //in this project version we don't really use CC details!:
+        const { place, day, month, year, time, comments } = this.state;
 
         logic
           .addDroppingDetails(place, day, month, year, time, comments, true) //last arg is 'paid'
