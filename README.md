@@ -32,7 +32,7 @@ To use this App **[click here](http://planbe-freshbites.surge.sh/)**
 
 **Landing page:**
 
-![landing page](./doc/img/landing-screenshot.png)
+![landing page](./doc/img/landing-screenshot.PNG)
 
 **Home page:**
 
@@ -45,6 +45,10 @@ To use this App **[click here](http://planbe-freshbites.surge.sh/)**
 **Dropping details page:**
 
 ![dropping details page](./doc/img/dropping-details-screenshot.PNG)
+
+**Confirmation popup**
+
+![confirmation details popup](./doc/img/confirmation_popup.PNG)
 
 # Instructions
 

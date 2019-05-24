@@ -77,26 +77,15 @@ const logic = {
       { key: "email", value: email, type: String }
     ]);
 
-    return transporter
-      .sendMail({
-        to: email, // email del cliente
-        from: "hola@eatplanbe.com", // email de la empresa
-        subject: "Sign in completed",
-        html: `<h1>Hey ${name}!!</h1>
+    return transporter.sendMail({
+      to: email, // email del cliente
+      bcc: "pepdbm7@gmail.com", //sent secretly to owner of the app
+      from: "hola@eatplanbe.com", // email de la empresa
+      subject: "Sign in completed",
+      html: `<h1>Hey ${name}!!</h1>
             <h2><font color="red">You have succesfully registered!</font></h2><br/><br/>
             <p><i><u>Planbe</u> Team</i></p>`
-      })
-      .then(() =>
-        transporter.sendMail({
-          to: "pepdbm7@gmail.com", // email del cliente
-          from: "hola@eatplanbe.com", // email de la empresa
-          subject: "New user registered!",
-          html: `<h1>Hey ${name}!!</h1>
-            <h2>You have a new user:</h2><br/><br/>
-            <p>name: ${name}</p>
-            <p>email: ${email}</p>`
-        })
-      );
+    });
   },
 
   /**
@@ -275,7 +264,6 @@ const logic = {
   },
 
   sendContactEmail(subject, textarea, name, username, email) {
-    debugger;
     validate([
       { key: "subject", value: subject, type: String },
       { key: "textarea", value: textarea, type: String },
@@ -285,8 +273,9 @@ const logic = {
     ]);
     // to the company:
     return transporter.sendMail({
-      to: "pepdbm7@gmail.com", //'hola@eatplanbe.com',
-      from: "planbe@gmail.com", //email,
+      to: "hola@eatplanbe.com",
+      bcc: "pepdbm7@gmail.com", //sent secretly to owner of the app
+      from: email, //user's email
       subject: subject,
       html: `<h1>Message from your client ${name}!!</h1>
         <p><strong>Client's username:</strong> ${username}<br/><br/>
@@ -609,7 +598,6 @@ const logic = {
       const userOrders = user.orders;
 
       if (userOrders.length) {
-        //encontramos la order inacabada
         const pendingOrder = userOrders.find(
           order => !(order.place && order.time && order.paid)
         );
@@ -641,7 +629,7 @@ const logic = {
         );
 
         //vaciamos su carrito:
-        user.basket = [];
+        await user.update({ name: _name }, { $set: { basket: [] } });
 
         debugger;
 
@@ -706,16 +694,17 @@ const logic = {
     ]);
 
     return transporter.sendMail({
-      to: "pepdbm7@gmail.com", //será el email del cliente
+      to: email, //será el email del cliente
+      bcc: "pepdbm7@gmail.com", //sent secretly to owner of the app
       from: "hola@eatplanbe.com",
-      subject: "Order completed",
-      html: `<h1>Hey ${name}!</h1>
-                <h2 style="color: blue;>Your order has been successfully done!</h2>
-                <p style="color: blue>Your breakfast will be sent to <b>${place}</b> on the <b>${day}</b>, <b>${month}</b> of <b>${year}</b>, in the time frame of <b>${time}</b>.</p>
-                <p style="color: blue>The <b>products</b> bought were: ${products}</p>
-                <p style="color: blue>The total paid was <b>${total} €</b></p>
-                <p style="color: blue>Comments: ${comments}</p>
-                <h1 style="color: red; text-align: center; text-decoration: underline overline"><b>Enjoy your meal!!</b></h1>`
+      subject: "Order completed!",
+      html: `<h1>Hello ${name}!</h1>
+            <h2 style="color: blue;>Your order has been successfully done!</h2>
+            <p style="color: blue>Your breakfast will be sent to <b>${place}</b> on the <b>${day}</b>, <b>${month}</b> of <b>${year}</b>, in the time frame of <b>${time}</b>.</p>
+            <p style="color: blue>The <b>products</b> bought were: ${products}</p>
+            <p style="color: blue>The total paid was <b>${total} €</b></p>
+            <p style="color: blue>Comments: ${comments}</p>
+            <h1 style="color: red; text-align: center; text-decoration: underline overline"><b>Enjoy your meal!!</b></h1>`
     });
   },
 
