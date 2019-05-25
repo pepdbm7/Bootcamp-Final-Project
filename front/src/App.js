@@ -16,7 +16,8 @@ import ViewOrders from "./components/ViewOrders";
 import logic from "./logic";
 import { Route, withRouter, Redirect } from "react-router-dom";
 
-logic.url = "https://young-reef-84922.herokuapp.com/api";
+logic.url = "https://young-reef-84922.herokuapp.com/api"; //to use serverside connected to heroku
+// logic.url = "http://localhost:5000/api"; //to use serverside of this repo
 
 const App = props => {
   //REDIRECTS:

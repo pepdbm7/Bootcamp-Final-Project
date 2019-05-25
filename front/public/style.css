@@ -1028,10 +1028,10 @@ a {
 }
 
 .bounce {
-  -webkit-animation: bounce 2s infinite;
+  animation: bounce 2s infinite;
 }
 
-@-webkit-keyframes bounce {
+@keyframes bounce {
   0% {
     bottom: 5px;
   }
