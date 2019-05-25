@@ -20,8 +20,18 @@ class Update extends Component {
     password: ""
   };
 
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState !== this.state) console.log(this.state);
+  componentDidMount() {
+    try {
+      logic
+        .retrieveUser()
+        .then(({ type, name, surname, email, username }) => {
+          console.log(name);
+          this.setState({ type, name, surname, email, username });
+        })
+        .catch(err => this.setState({ error: err.message }));
+    } catch (err) {
+      this.setState({ error: err.message });
+    }
   }
 
   handleChange = e => {
@@ -46,6 +56,8 @@ class Update extends Component {
     } = this.state;
 
     try {
+      this.setState({ showSpinner: true });
+
       logic
         .sendUpdatedInfo(
           type,
@@ -58,55 +70,61 @@ class Update extends Component {
           password
         )
         .then(() => {
-          this.setState({ successMessage: "Account updated!!" });
+          this.setState({
+            showSpinner: false,
+            successMessage: "Account updated!!"
+          });
           setTimeout(() => {
             this.setState({ successMessage: null });
             this.props.history.push("/profile");
           }, 2000);
         })
-        .catch(err => {
-          this.setState({ errorMessage: err.message }, () => {
-            setTimeout(() => {
-              this.setState({ errorMessage: null });
-            }, 2000);
-          });
-        });
+        .catch(err => this.showError(err));
     } catch (err) {
-      this.setState({ errorMessage: err.message }, () => {
-        setTimeout(() => {
-          this.setState({ errorMessage: null });
-        }, 2000);
-      });
+      this.showError(err);
     }
+  };
+
+  showError = err => {
+    this.setState({ showSpinner: false, errorMessage: err.message }, () => {
+      setTimeout(() => {
+        this.setState({ errorMessage: null });
+      }, 2500);
+    });
   };
 
   onGoBack = () => this.props.history.push("/profile");
 
   render() {
+    const { handleChange, handleSubmit } = this;
+    const {
+      showSpinner,
+      successMessage,
+      errorMessage,
+      type,
+      name,
+      surname,
+      email,
+      username
+    } = this.state;
+
     let message = () => {
-      if (this.state.successMessage) {
-        return <p className="correct">{this.state.successMessage}</p>;
-      } else if (this.state.errorMessage) {
-        return <p className="error">{this.state.errorMessage}</p>;
-      }
+      if (successMessage) return <p className="correct">{successMessage}</p>;
+      else if (errorMessage) return <p className="error">{errorMessage}</p>;
       return null;
     };
-
-    const { handleChange } = this;
 
     return (
       <div>
         <Header />
         <div className="update__container">
           <h1 className="update__title">Update Profile</h1>
-          <form
-            className="form-group update__form"
-            onSubmit={this.handleSubmit}
-          >
-            <div class="form-group">
+          <form className="form-group update__form" onSubmit={handleSubmit}>
+            <div className="form-group">
               <select
                 className="form-control update__type"
                 required
+                defaultValue={type}
                 onChange={handleChange}
               >
                 <option className="form-control update__type" disabled selected>
@@ -126,6 +144,7 @@ class Update extends Component {
             </div>
             <div className="form-group">
               <input
+                defaultValue={name}
                 className="form-control"
                 required
                 type="text"
@@ -136,6 +155,7 @@ class Update extends Component {
             </div>
             <div className="form-group">
               <input
+                defaultValue={surname}
                 className="form-control"
                 required
                 type="text"
@@ -146,6 +166,7 @@ class Update extends Component {
             </div>
             <div className="form-group">
               <input
+                defaultValue={username}
                 className="form-control"
                 required
                 type="text"
@@ -156,6 +177,7 @@ class Update extends Component {
             </div>
             <div className="form-group">
               <input
+                defaultValue={email}
                 className="form-control"
                 required
                 type="text"
@@ -199,15 +221,15 @@ class Update extends Component {
               <button className="btn btn-primary btn-lg" type="submit">
                 CONFIRM CHANGES
               </button>
-              <button
-                className="btn-register btn btn-link"
-                href="#"
-                onClick={this.onGoBack}
-              >
+              <button className="btn btn-link" href="#" onClick={this.onGoBack}>
                 Go Back
               </button>
             </div>
-
+            {showSpinner ? (
+              <div className="spinner-container">
+                <i className="fa fa-spinner fa-pulse fa-3x fa-fw" />
+              </div>
+            ) : null}
             {message()}
           </form>
         </div>

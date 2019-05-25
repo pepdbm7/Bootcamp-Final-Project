@@ -10,23 +10,32 @@ import Product from "./Product";
 import logic from "../logic";
 
 class Home extends Component {
-  state = { errorMessage: null, products: [], isProductAdded: false };
+  state = {
+    showSpinner: false,
+    errorMessage: null,
+    products: [],
+    isProductAdded: false
+  };
 
   componentDidMount() {
-    logic.listAllProducts().then(products => this.setState({ products }));
+    this.setState({ showSpinner: true });
+    logic
+      .listAllProducts()
+      .then(products => this.setState({ showSpinner: false, products }));
   }
 
   handleAddToCart = id => {
     try {
+      this.setState({ showSpinner: true });
       logic.addProductToCart(id).then(() =>
-        this.setState({ isProductAdded: true }, () => {
+        this.setState({ showSpinner: false, isProductAdded: true }, () => {
           setTimeout(() => {
             this.setState({ isProductAdded: false });
           }, 2000);
         })
       );
     } catch ({ message }) {
-      this.setState({ errorMessage: message }, () => {
+      this.setState({ showSpinner: false, errorMessage: message }, () => {
         setTimeout(() => {
           this.setState({ errorMessage: null });
         }, 3000);
@@ -37,7 +46,7 @@ class Home extends Component {
   render() {
     const types = ["sandwich", "salad", "juice", "yogurt"];
     const titles = ["SANDWICHES", "SALADS", "JUICES", "YOGURTS"];
-    const { products, errorMessage, isProductAdded } = this.state;
+    const { showSpinner, products, errorMessage, isProductAdded } = this.state;
     const { handleAddToCart } = this;
 
     return (
@@ -52,7 +61,12 @@ class Home extends Component {
         />
         <div className="home__container">
           <h1 className="home__title">OUR PRODUCTS</h1>
-          {errorMessage ? <Error message={this.state.errorMessage} /> : null}
+          {showSpinner ? (
+            <div className="spinner-container">
+              <i class="fa fa-spinner fa-pulse fa-3x fa-fw" />
+            </div>
+          ) : null}
+          {errorMessage ? <Error message={errorMessage} /> : null}
           {products.length
             ? types.map((type, index) => (
                 <section>

@@ -11,96 +11,74 @@ import Total from "./Total";
 import Error from "./Error";
 
 class Cart extends Component {
-  state = { errorMessage: null, products: [], total: "" }; //array con obj d productos, con todos sus fields (quantity, name, etc)
+  state = { showSpinner: true, errorMessage: null, products: [], total: "" };
 
   componentDidMount() {
     logic
       .listCartProducts()
       .then(products => {
-        this.setState({ products });
-      }) //metemos en state los productos filtrados con la lógica, y luego renderizaremos lo dl state
-      .then(() => {
-        let sum = 0;
-        this.state.products.map(product => {
-          const price = product.price.$numberDouble || product.price;
-          return (sum += price * product.quantity);
-        });
-        sum = sum.toFixed(2);
-        this.setState({ total: sum });
+        this.setState({ showSpinner: false, products });
       })
-      .catch(err => {
-        this.setState({ errorMessage: err.message }, () => {
-          setTimeout(() => {
-            this.setState({ errorMessage: null });
-          }, 3000);
-        });
-      });
+      .then(() => this.setTotal())
+      .catch(err => this.showError(err));
   }
 
   //add item:
   addMore = id => {
     try {
+      this.setState({ showSpinner: true });
       logic
         .addMore(id)
         .then(() => logic.listCartProducts())
-        .then(products => this.setState({ products }))
-        .then(() => {
-          let sum = 0;
-          this.state.products.map(product => {
-            const price = product.price.$numberDouble || product.price;
-            return (sum += price * product.quantity);
-          });
-          sum = sum.toFixed(2);
-          this.setState({ total: sum });
-        })
-        .catch(err => {
-          this.setState({ errorMessage: err.message }, () => {
-            setTimeout(() => {
-              this.setState({ errorMessage: null });
-            }, 3000);
-          });
-        });
-    } catch ({ message }) {
-      this.setState({ errorMessage: message }, () => {
-        setTimeout(() => {
-          this.setState({ errorMessage: null });
-        }, 3000);
-      });
+        .then(products => this.setState({ showSpinner: false, products }))
+        .then(() => this.setTotal())
+        .catch(err => this.showError(err));
+    } catch (err) {
+      this.showError(err);
     }
   };
 
   //delete item:
   handleDeleteMoreFromCart = id => {
     try {
+      this.setState({ showSpinner: true });
       logic
         .removeProductFromCart(id)
         .then(() => logic.listCartProducts())
-        .then(products => this.setState({ products }))
-        .then(() => {
-          let sum = 0;
-          this.state.products.map(product => {
-            const price = product.price.$numberDouble || product.price;
-            return (sum += price * product.quantity);
-          });
-          sum = sum.toFixed(2);
-          this.setState({ total: sum });
-        })
-        .catch(err => {
-          if (err.message.includes("No matching document found for id")) {
-            this.setState({ errorMessage: "Not so fast, please" }, () => {
-              setTimeout(() => {
-                this.setState({ errorMessage: null });
-              }, 3000);
-            });
-          }
-        });
-    } catch ({ message }) {
-      this.setState({ errorMessage: message }, () => {
+        .then(products => this.setState({ showSpinner: false, products }))
+        .then(() => this.setTotal())
+        .catch(err => this.showError(err));
+    } catch (err) {
+      this.showError(err);
+    }
+  };
+
+  setTotal = () => {
+    let sum = 0;
+    this.state.products.forEach(p => {
+      const price = p.price.$numberDouble || p.price;
+      return (sum += price * p.quantity);
+    });
+    sum = sum.toFixed(2);
+    this.setState({ total: sum });
+  };
+
+  showError = ({ message }) => {
+    const _message = message.includes("No matching document found for id")
+      ? "Not so fast, please"
+      : message;
+    console.log(_message);
+    this.setState(
+      {
+        showSpinner: false,
+        errorMessage: _message
+      },
+      () => {
         setTimeout(() => {
           this.setState({ errorMessage: null });
         }, 3000);
-      });
-    }
+      }
+    );
   };
 
   handleClick = () => {
@@ -112,17 +90,13 @@ class Cart extends Component {
       logic.createNewOrder(productsId, totalstr).then(() => {
         this.props.history.push("/setorder");
       });
-    } catch ({ message }) {
-      this.setState({ errorMessage: message }, () => {
-        setTimeout(() => {
-          this.setState({ errorMessage: null });
-        }, 3000);
-      });
+    } catch (err) {
+      this.showError(err);
     }
   };
 
   render() {
-    const { errorMessage, products } = this.state;
+    const { showSpinner, errorMessage, products, total } = this.state;
     const types = ["sandwich", "salad", "juice", "yogurt"];
     const titles = ["SANDWICHES", "SALADS", "JUICES", "YOGURTS"];
 
@@ -137,7 +111,12 @@ class Cart extends Component {
         />
 
         <div className="cart__container cart">
-          {errorMessage ? <Error message={this.state.errorMessage} /> : null}
+          {showSpinner ? (
+            <div className="spinner-container spinner-cart">
+              <i class="fa fa-spinner fa-pulse fa-3x fa-fw" />
+            </div>
+          ) : null}
+          {errorMessage ? <Error message={errorMessage} /> : null}
           {products.length
             ? types.map((type, index) => (
                 <div className="cart__products-container">
@@ -168,10 +147,10 @@ class Cart extends Component {
         </div>
 
         <div className="cart__footer">
-          {this.state.total > 0 && <Total calculatedTotal={this.state.total} />}
-          {this.state.total > 0 && (
+          {total > 0 && <Total calculatedTotal={total} />}
+          {total > 0 && (
             <button
-              className="btn btn-primary btn-lg cart__submit-button"
+              className="btn btn-primary cart__submit-button"
               type="submit"
               onClick={this.handleClick}
             >

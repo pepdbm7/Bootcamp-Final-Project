@@ -4,7 +4,31 @@ body {
   width: 100vw;
   height: 100vh;
   font-weight: 800;
+  overflow-x: hidden;
 }
+
+/* SCROLLBAR */
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 5px 5px 5px whitesmoke;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #315d1f;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(122, 160, 96);
+}
+
+/* ----------------- */
 
 /* LANDING PAGE */
 .landing-container {
@@ -167,6 +191,7 @@ body {
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
+  overflow-x: hidden;
 }
 
 .register__title {
@@ -196,6 +221,21 @@ label {
   box-shadow: 1px 4px 10px #0000005e;
 }
 
+.spinner-container {
+  width: 100%;
+  text-align: center;
+  color: lawngreen;
+  margin-bottom: 10px;
+}
+
+.spinner-cart {
+  margin-top: 20px;
+  position: absolute;
+  width: 85%;
+  display: flex;
+  justify-content: flex-end;
+}
+
 /* LOGIN PAGE */
 .login__container {
   z-index: -10;
@@ -210,6 +250,7 @@ label {
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
+  overflow-x: hidden;
 }
 
 .login__title {
@@ -235,7 +276,7 @@ label {
 
 .correct {
   align-self: center;
-  color: #1e6262;
+  color: lawngreen;
   font-weight: 700;
 }
 
@@ -271,6 +312,7 @@ label {
 .cart__container,
 .orders_container,
 .contact__container,
+.profile__container,
 .payActive,
 .detailsActive {
   background: rgba(255, 255, 255, 1);
@@ -312,17 +354,14 @@ label {
     rgba(204, 200, 204, 0.85) 100%
   );
   box-shadow: 0px 5px 40px 5px rgba(0, 0, 0, 0.43);
-  width: 100vw;
-  padding: 35px;
-  margin: 40px 0 0;
+  min-width: 100vw;
+  min-height: 100vh;
+  padding: 75px 35px 35px;
+  margin: 0;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-}
-
-.home__container,
-.cart {
-  min-height: 100vh;
+  overflow-x: hidden;
 }
 
 /* PROFILE PAGE */
@@ -332,13 +371,12 @@ label {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
-  width: 100vw;
   background-image: url("./img/bgpattern_pez.PNG");
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
+  overflow-x: hidden;
 }
 
 .profile__title {
@@ -388,6 +426,7 @@ label {
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
+  overflow-x: hidden;
 }
 
 .update__title {
@@ -438,13 +477,6 @@ label {
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-}
-
-.contact__container {
-  margin-top: 75px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
 }
 
 .contact__title,
@@ -504,7 +536,6 @@ a {
   flex-direction: column;
   width: 100vw;
   min-width: 350px;
-  overflow: scroll;
   background-image: url("./img/bgpattern.PNG");
 }
 
@@ -565,6 +596,7 @@ a {
   padding: 20px 10px;
   margin: 0px 15px 30px 10px;
   box-shadow: 2px 2px 7px #000000ce;
+  overflow-x: hidden;
 
   -webkit-transition: background-color 0.5s; /* Safari */
   -webkit-transition-timing-function: linear; /* Safari */
@@ -667,7 +699,6 @@ a {
   flex-direction: column;
   width: 100vw;
   min-width: 350px;
-  overflow: scroll;
   background-image: url("./img/bgpattern.PNG");
 }
 
@@ -684,6 +715,7 @@ a {
 .products__container {
   display: flex;
   flex-wrap: wrap;
+  overflow-x: hidden;
 }
 
 .cart__footer {
@@ -705,7 +737,7 @@ a {
   font-weight: 900;
   text-transform: uppercase;
   display: block;
-  font-size: 40px;
+  font-size: 35px;
   padding-top: 20px;
 }
 
@@ -715,7 +747,7 @@ a {
   }
 
   .total__message {
-    font-size: 30px;
+    font-size: 28px;
     font-family: "Lato", sans-serif;
   }
   .home__type-title-sandwich,
@@ -754,7 +786,6 @@ a {
   width: 100vw;
   min-width: 350px;
   min-height: 100vh;
-  overflow: scroll;
   background-image: url("./img/bgpattern.PNG");
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -830,6 +861,7 @@ a {
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
+  overflow-x: hidden;
 }
 
 .popup__backgroundImg {
@@ -880,7 +912,6 @@ a {
   flex-direction: column;
   width: 100vw;
   min-width: 350px;
-  overflow: scroll;
   background-image: url("./img/bgpattern_coles.PNG");
 }
 
@@ -888,6 +919,7 @@ a {
   min-height: 170vh;
   width: 100vw;
   height: 100vh;
+  overflow-x: hidden;
 }
 
 .orders__title {
@@ -913,7 +945,7 @@ a {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  background-color: rgba(195, 190, 184, 0.93);
+  background-color: #d2eec2ed;
   box-shadow: 2px 2px 8px black;
   border-radius: 5px;
   width: 60%;

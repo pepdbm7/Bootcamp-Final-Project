@@ -98,24 +98,24 @@ class Profile extends Component {
                 placeholder={this.state.username}
               />
             </div>
-          </form>
 
-          <div className="form-group">
-            <button
-              className="btn btn-primary btn-lg"
-              type="submit"
-              onClick={this.handleEditClick}
-            >
-              Edit profile
-            </button>
-            <button
-              className="btn-profile btn btn-link"
-              href="#"
-              onClick={this.onGoBack}
-            >
-              Go Home
-            </button>
-          </div>
+            <div className="form-group">
+              <button
+                className="btn btn-primary btn-lg"
+                type="submit"
+                onClick={this.handleEditClick}
+              >
+                Edit profile
+              </button>
+              <button
+                className="btn-profile btn btn-link"
+                href="#"
+                onClick={this.onGoBack}
+              >
+                Go Home
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     );

@@ -6,6 +6,7 @@ import logic from "../logic";
 
 class Register extends Component {
   state = {
+    showSpinner: false,
     successMessage: null,
     errorMessage: null,
     type: "",
@@ -28,11 +29,13 @@ class Register extends Component {
     const { type, name, surname, email, username, password } = this.state;
 
     try {
+      this.setState({ showSpinner: true });
       logic
         .registerUser(type, name, surname, email, username, password)
         .then(() =>
           this.setState(
             {
+              showSpinner: false,
               successMessage: `Great, ${username}! Thanks for registering!`,
               name: "",
               surname: "",
@@ -55,7 +58,10 @@ class Register extends Component {
             "The provided authorization grant is invalid, expired, or revoked"
           ) {
             this.setState(
-              { successMessage: `Great, ${username}! Thanks for registering!` },
+              {
+                showSpinner: false,
+                successMessage: `Great, ${username}! Thanks for registering!`
+              },
               () =>
                 setTimeout(() => {
                   this.setState({ successMessage: null });
@@ -64,12 +70,12 @@ class Register extends Component {
             );
           }
 
-          this.setState({ errorMessage: err.message }, () =>
+          this.setState({ showSpinner: false, errorMessage: err.message }, () =>
             setTimeout(() => this.setState({ errorMessage: null }), 2000)
           );
         });
     } catch (err) {
-      this.setState({ errorMessage: err.message }, () =>
+      this.setState({ showSpinner: false, errorMessage: err.message }, () =>
         setTimeout(() => {
           this.setState({ errorMessage: null });
         }, 2000)
@@ -78,19 +84,24 @@ class Register extends Component {
   };
 
   render() {
+    const { handleChange } = this;
+    const { onGoBack } = this.props;
+    const {
+      showSpinner,
+      successMessage,
+      errorMessage,
+      name,
+      surname,
+      email,
+      username,
+      password
+    } = this.state;
+
     let message = () => {
-      if (this.state.successMessage) {
-        return <p className="correct">{this.state.successMessage}</p>;
-      } else if (this.state.errorMessage) {
-        return <p className="error">{this.state.errorMessage}</p>;
-      }
+      if (successMessage) return <p className="correct">{successMessage}</p>;
+      else if (errorMessage) return <p className="error">{errorMessage}</p>;
       return null;
     };
-
-    const { handleChange } = this;
-    const { name, surname, email, username, password } = this.state;
-    const { onGoBack } = this.props;
-
     return (
       <div className="register__container">
         <h1 className="register__title">Sign Up</h1>
@@ -180,14 +191,15 @@ class Register extends Component {
             <button className="btn btn-primary btn-lg" type="submit">
               Submit
             </button>{" "}
-            <button
-              className="btn-register btn btn-link"
-              href="#"
-              onClick={onGoBack}
-            >
+            <button className="btn btn-link" href="#" onClick={onGoBack}>
               Go Back
             </button>
           </div>
+          {showSpinner ? (
+            <div className="spinner-container">
+              <i class="fa fa-spinner fa-pulse fa-3x fa-fw" />
+            </div>
+          ) : null}
           {message()}
         </form>
       </div>

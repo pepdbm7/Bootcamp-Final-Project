@@ -4,6 +4,7 @@ import logic from "../logic";
 
 class Login extends Component {
   state = {
+    showSpinner: false,
     successMessage: null,
     errorMessage: null,
     username: "",
@@ -18,47 +19,46 @@ class Login extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-
     const { username, password } = this.state;
 
     try {
+      this.setState({ showSpinner: true });
       logic
         .login(username, password)
         .then(() =>
-          this.setState({ successMessage: "Welcome!!" }, () => {
-            setTimeout(() => {
-              this.setState({ successMessage: null });
-              this.props.history.push("/home");
-            }, 2000);
-          })
+          this.setState(
+            { showSpinner: false, successMessage: "Welcome!!" },
+            () => {
+              setTimeout(() => {
+                this.setState({ successMessage: null });
+                this.props.history.push("/home");
+              }, 2000);
+            }
+          )
         )
-        .catch(err => {
-          this.setState({ errorMessage: err.message }, () => {
-            setTimeout(() => {
-              this.setState({ errorMessage: null });
-            }, 2500);
-          });
-        });
+        .catch(err => this.showError(err));
     } catch (err) {
-      this.setState({ errorMessage: err.message }, () => {
-        setTimeout(() => {
-          this.setState({ errorMessage: null });
-        }, 2500);
-      });
+      this.showError(err);
     }
   };
 
+  showError = err => {
+    this.setState({ showSpinner: false, errorMessage: err.message }, () => {
+      setTimeout(() => {
+        this.setState({ errorMessage: null });
+      }, 2500);
+    });
+  };
+
   render() {
+    const { handleChange, handleSubmit } = this;
+    const { showSpinner, successMessage, errorMessage } = this.state;
+
     let message = () => {
-      if (this.state.successMessage) {
-        return <p className="correct">{this.state.successMessage}</p>;
-      } else if (this.state.errorMessage) {
-        return <p className="error">{this.state.errorMessage}</p>;
-      }
+      if (successMessage) return <p className="correct">{successMessage}</p>;
+      else if (errorMessage) return <p className="error">{errorMessage}</p>;
       return null;
     };
-
-    const { handleChange, handleSubmit } = this;
 
     return (
       <div className="login__container">
@@ -92,13 +92,18 @@ class Login extends Component {
               Login
             </button>
             <button
-              className="btn-register btn btn-link"
+              className="btn btn-link"
               href="#"
               onClick={this.props.onGoBack}
             >
               Go Back
             </button>
           </div>
+          {showSpinner ? (
+            <div className="spinner-container">
+              <i class="fa fa-spinner fa-pulse fa-3x fa-fw" />
+            </div>
+          ) : null}
           {message()}
         </form>
       </div>
