@@ -1,22 +1,23 @@
-const {
-  models: { Product, Order, User }
-} = require("planbe-data");
+//environment variables (available, but not published on GitHub):
+require("dotenv").config();
 
+//emails funcionality:
 const nodemailer = require("nodemailer");
 const sendgridTransport = require("nodemailer-sendgrid-transport");
-
-const {
-  env: { SENDGRID_KEY }
-} = process;
-
 const transporter = nodemailer.createTransport(
   sendgridTransport({
     auth: {
-      api_key: SENDGRID_KEY
+      api_key: process.env.SENDGRID_KEY
     }
   })
 );
 
+//data models:
+const {
+  models: { Product, Order, User }
+} = require("planbe-data");
+
+//utils:
 const {
   AlreadyExistsError,
   AuthError,
@@ -26,8 +27,10 @@ const {
 const validate = require("../utils/validate");
 
 const logic = {
+  //------------------------USERS RELATED------------------------
+
   /**
-   * Register a user
+   * REGISTER a user
    *
    * @param {*} type
    * @param {*} name
@@ -40,7 +43,7 @@ const logic = {
    * @throws {AlreadyExistsError} On already registered user with that email
    */
 
-  registerUser(type, name, surname, email, username, password) {
+  async registerUser(type, name, surname, email, username, password) {
     validate([
       { key: "type", value: type, type: String },
       { key: "name", value: name, type: String },
@@ -50,18 +53,17 @@ const logic = {
       { key: "password", value: password, type: String }
     ]);
 
-    return (async () => {
-      let user = await User.findOne({ username });
-      let _email = await User.findOne({ email });
+    let user = await User.findOne({ username });
+    let _email = await User.findOne({ email });
 
-      if (user)
-        throw new AlreadyExistsError(`Username ${username} already registered`);
-      if (_email)
-        throw new AlreadyExistsError(`Email ${email} already registered`);
+    if (user)
+      throw new AlreadyExistsError(`Username ${username} already registered`);
+    if (_email)
+      throw new AlreadyExistsError(`Email ${email} already registered`);
 
-      user = new User({ type, name, surname, email, username, password });
-      await user.save();
-    })();
+    user = new User({ type, name, surname, email, username, password });
+    await user.save();
+    await console.log("From Backend: registration is done!");
   },
 
   /**
@@ -78,42 +80,40 @@ const logic = {
     ]);
 
     return transporter.sendMail({
-      to: email, // email del cliente
+      to: email, // user's email
       bcc: "pepdbm7@gmail.com", //sent secretly to owner of the app
-      from: "hola@eatplanbe.com", // email de la empresa
+      from: "hola@eatplanbe.com", // planbe email
       subject: "Sign in completed",
       html: `<h1>Hey ${name}!!</h1>
-            <h2><font color="red">You have succesfully registered!</font></h2><br/><br/>
+            <h2>You have succesfully registered!</h2><br/><br/>
             <p><i><u>Planbe</u> Team</i></p>`
     });
   },
 
   /**
-   * Authenticate a user
+   * LOGIN a user
    *
    * @param {*} username
    * @param {*} password
    * @throws {AuthError} if no user with that username found, or if password is wrong
    */
 
-  authenticateUser(username, password) {
+  async authenticateUser(username, password) {
     validate([
       { key: "username", value: username, type: String },
       { key: "password", value: password, type: String }
     ]);
 
-    return (async () => {
-      const user = await User.findOne({ username });
+    const user = await User.findOne({ username });
 
-      if (!user || user.password !== password)
-        throw new AuthError("invalid username or password");
+    if (!user || user.password !== password)
+      throw new AuthError("invalid username or password");
 
-      return user.id;
-    })();
+    return user.id;
   },
 
   /**
-   * Retrieve a user
+   * RETRIEVE a user
    *
    * @param {*} id
    *
@@ -140,7 +140,7 @@ const logic = {
   },
 
   /**
-   * update profile of a user
+   * UPDATE profile of a user
    *
    * @param {*} id
    * @param {*} type
@@ -233,7 +233,7 @@ const logic = {
   },
 
   /**
-   * send inquiry to the planbe team (for Next Iteration!)
+   * send CONTACT MESSAGE to the planbe team
    *
    * @param {*} id
    * @param {*} subject
@@ -284,8 +284,10 @@ const logic = {
     });
   },
 
+  //------------------------PRODUCTS RELATED------------------------
+
   /**
-   * lists all products from database
+   * LIST ALL PRODUCTS from DB
    *
    * @throws {NotFoundError} on any found products on database
    */
@@ -312,7 +314,7 @@ const logic = {
   },
 
   /**
-   * add selected products to user's basket
+   * ADD product to Cart
    *
    * @param {*} id
    * @param {*} type
@@ -353,82 +355,79 @@ const logic = {
   },
 
   /**
-   * lists selected products to the cart
+   * RETRIEVES ADDED products to cart
    *
    * @param {*} id
    *
    * @throws {NotFoundError} on not found user with that id
    */
 
-  listCartProducts(id) {
+  async listCartProducts(id) {
     validate([{ key: "id", value: id, type: String }]);
 
-    return (async () => {
-      const user = await User.findById(id).lean();
-      if (!user) throw new NotFoundError(`user with id ${id} not found`);
+    const user = await User.findById(id).lean();
+    if (!user) throw new NotFoundError(`user with id ${id} not found`);
 
-      const productsArray = user.basket;
+    const productsArray = user.basket;
 
-      if (productsArray.length) {
-        const projection = {
-          _id: true,
-          type: true,
-          name: true,
-          price: true,
-          image: true,
-          quantity: true,
-          description: true
-        }; //ponemos true a los campos q queremos q nos devuelva
-        // const products = await Product.find( {}, projection )
-        let products = await Promise.all(
-          productsArray.map(
-            async productId =>
-              await Product.findById(productId, projection).lean()
-          )
+    if (productsArray.length) {
+      //we set to true the fields we need to be returned:
+      const projection = {
+        _id: true,
+        type: true,
+        name: true,
+        price: true,
+        image: true,
+        quantity: true,
+        description: true
+      };
+      let products = await Promise.all(
+        productsArray.map(
+          async productId =>
+            await Product.findById(productId, projection).lean()
+        )
+      );
+
+      // delete _id from Mongo:
+      products.forEach(product => {
+        product.id = product._id.toString();
+        delete product._id;
+      });
+
+      //count repeated times:
+      products.forEach(_product => {
+        let repeatedTimes = products.filter(
+          __product => __product.id === _product.id
         );
+        _product.quantity = repeatedTimes.length;
+      });
 
-        products.forEach(product => {
-          product.id = product._id.toString(); //pasamos el _id de mongo a id
-          delete product._id; //borramos el _id
-        });
+      //delete repeated products
+      products.forEach(_product =>
+        products.filter(__product => __product.id !== _product.id)
+      );
 
-        //la cantidad de cada producto será el núm d veces q se repita:
-        products.forEach(_product => {
-          let repeatedTimes = products.filter(
-            __product => __product.id === _product.id
-          );
-          _product.quantity = repeatedTimes.length;
-        });
+      const flags = new Set();
+      let productsToList = products.filter(product => {
+        if (flags.has(product.id)) {
+          return false;
+        }
+        flags.add(product.id);
+        return product;
+      });
 
-        //eliminamos las repeticiones d cada producto:
-        products.forEach(_product =>
-          products.filter(__product => __product.id !== _product.id)
-        );
+      //to list them in same order always:
+      productsToList = productsToList.sort((a, b) =>
+        a.id > b.id ? 1 : b.id > a.id ? -1 : 0
+      );
 
-        const flags = new Set();
-        let productsToList = products.filter(product => {
-          if (flags.has(product.id)) {
-            return false;
-          }
-          flags.add(product.id);
-          return product;
-        });
-
-        //para que se listen siempre en el mismo orden, aunque con el delete se cambie
-        productsToList = productsToList.sort((a, b) =>
-          a.id > b.id ? 1 : b.id > a.id ? -1 : 0
-        );
-
-        return productsToList;
-      } else {
-        //si basket.length = 0:
-        return [];
-      }
-    })();
+      return productsToList;
+    }
+    return [];
   },
 
   /**
-   * Removes a product
+   * DELETE a product
    *
    * @param {string} id The user id
    * @param {string} productId The product id
@@ -441,49 +440,48 @@ const logic = {
    * @returns {Promise} Resolves on correct data, rejects on wrong user id, or product id
    */
 
-  removeProduct(id, productId) {
+  async removeProduct(id, productId) {
     validate([
       { key: "id", value: id, type: String },
       { key: "productId", value: productId, type: String }
     ]);
-    return (async () => {
-      const user = await User.findById(id);
 
-      if (!user) throw new NotFoundError(`user with id ${id} not found`);
+    const user = await User.findById(id);
 
-      let basket = user.basket;
+    if (!user) throw new NotFoundError(`user with id ${id} not found`);
 
-      if (!basket) throw new NotFoundError(`user 's basket not found`);
+    let basket = user.basket;
 
-      const product = await Product.findById(productId);
+    if (!basket) throw new NotFoundError(`user 's basket not found`);
 
-      if (!product)
-        throw new NotFoundError(`product with id ${productId} not found`);
+    const product = await Product.findById(productId);
 
-      if (basket.length) {
-        const productInCart = user.basket.filter(
-          _productId => _productId == productId
+    if (!product)
+      throw new NotFoundError(`product with id ${productId} not found`);
+
+    if (basket.length) {
+      const productInCart = user.basket.filter(
+        _productId => _productId == productId
+      );
+
+      if (!productInCart.length)
+        throw new NotFoundError(
+          `product with id ${productId} not found in the basket`
         );
 
-        if (!productInCart.length)
-          throw new NotFoundError(
-            `product with id ${productId} not found in the basket`
-          );
+      const duplicated = user.basket.filter(
+        _productId => _productId == productId
+      );
+      const different = user.basket.filter(
+        _productId => _productId != productId
+      );
 
-        const duplicated = user.basket.filter(
-          _productId => _productId == productId
-        );
-        const different = user.basket.filter(
-          _productId => _productId != productId
-        );
-
-        if (duplicated.length) {
-          duplicated.pop();
-          user.basket = different.concat(duplicated);
-        }
-        await user.save();
+      if (duplicated.length) {
+        duplicated.pop();
+        user.basket = different.concat(duplicated);
       }
-    })();
+      await user.save();
+    }
   },
 
   /**
